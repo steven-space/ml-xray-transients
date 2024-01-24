@@ -396,3 +396,14 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Manually added
+.DS_Store*
+.vscode/*
+*checkpoint*
+*__pycache__*
+*docs*
+!*Doxyfile
+*bin*
+*timers*
+*datasets*
