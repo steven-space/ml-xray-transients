@@ -16,5 +16,5 @@ def histogram_reader(histogram_file_path, properties_file_path, extractor_type):
     # Load properties table and filter by IDs
     df_properties_input = pd.read_csv(properties_file_path)
     df_properties_input = df_properties_input[df_properties_input['obsreg_id'].isin(ids)]
-    df_properties = df_properties_input.drop_duplicates('obsreg_id', keep='first').reset_index()
+    df_properties = df_properties_input.drop_duplicates('obsreg_id', keep='first')
     return histograms_array, df_properties, ids
