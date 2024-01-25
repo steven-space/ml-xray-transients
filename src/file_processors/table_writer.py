@@ -8,4 +8,5 @@ def embedding_writer(tsne_embedding, ids):
 def clustering_writer(df_tsne, labels):
     df_dbscan = df_tsne.copy()
     df_dbscan['cluster'] = labels
+    df_dbscan = df_dbscan.sort_values(by='cluster', ascending=True) 
     return df_dbscan
