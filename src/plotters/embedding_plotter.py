@@ -6,6 +6,11 @@ import json
 import pandas as pd
 
 def embedding_plotter(df, df_properties, color_code, bonafide_flares, bonafide_dips, bonafide_others):
+    df = df.sort_values(by='obsreg_id', ascending=True)
+    ids = df['obsreg_id'].values
+    df_prop_reduced = df_properties[df_properties['obsreg_id'].isin(ids)]
+    df_prop_reduced = df_prop_reduced.drop_duplicates('obsreg_id', keep='first')
+    df_prop_reduced = df_prop_reduced.sort_values(by='obsreg_id', ascending=True)
     # Setup plot 
     if color_code == "clusters":
         fig, axs = plt.subplots(figsize=(6, 6),tight_layout = True)
@@ -66,7 +71,7 @@ def embedding_plotter(df, df_properties, color_code, bonafide_flares, bonafide_d
         cmapcol = ListedColormap(colors[:len(df['cluster'].unique())])
 
     # Plot embeddings
-    unique_labels = df['cluster'].unique()
+    unique_labels = sorted(df['cluster'].unique())
     if color_code == "clusters":
         cluster = axs.scatter(df['tsne1'], df['tsne2'], s=0.1, c=df['cluster'], cmap=cmapcol)
         cluster_legend_handles = []
@@ -83,7 +88,7 @@ def embedding_plotter(df, df_properties, color_code, bonafide_flares, bonafide_d
         cluster_legend = axs.legend(handles=cluster_legend_handles, bbox_to_anchor=(1.02, 0.5), loc='center left', ncol=2, frameon=False, fontsize=8)
         axs.add_artist(cluster_legend)
     else:
-        se = axs.scatter(df['tsne1'], df['tsne2'], c=df_properties[color_code], s=0.1, cmap=cmapcol)
+        se = axs.scatter(df['tsne1'], df['tsne2'], c=df_prop_reduced[color_code], s=0.1, cmap=cmapcol)
         cbar_se = fig.colorbar(se, ax = axs)
         cbar_se.set_ticks(cbar_range)
         cbar_se.ax.set_ylabel(f'{color_code}', rotation = 0,labelpad=30)
